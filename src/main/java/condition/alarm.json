@@ -1,0 +1,67 @@
+{
+  "id": "2a0504d0-0393-ac40-1ab2-a658102cee8b",
+  "alarmType": "Simple",
+  "createRules": {
+    "CRITICAL": {
+      "condition": [
+        {
+          "condition": [
+            {
+              "key": {
+                "type": "ATTRIBUTE",
+                "key": "newAttribute"
+              },
+              "valueType": "NUMERIC",
+              "conditionId": "C1",
+              "value": null,
+              "predicate": {
+                "operation": "GREATER",
+                "value": {
+                  "defaultValue": 10,
+                  "dynamicValue": null
+                },
+                "type": "NUMERIC"
+              }
+            }
+          ],
+          "spec": {
+            "type": "SIMPLE"
+          }
+        },
+        {
+          "condition": [
+            {
+              "key": {
+                "type": "ATTRIBUTE",
+                "key": "newAttribute"
+              },
+              "valueType": "NUMERIC",
+              "conditionId": "C2",
+              "value": null,
+              "predicate": {
+                "operation": "GREATER",
+                "value": {
+                  "defaultValue": 10,
+                  "dynamicValue": null
+                },
+                "type": "NUMERIC"
+              }
+            }
+          ],
+          "spec": {
+            "type": "SIMPLE"
+          }
+        }
+      ],
+      "schedule": null,
+      "alarmDetails": null,
+      "dashboardId": null
+    }
+  },
+  "rule": "C1ANDC2",
+  "clearRule": null,
+  "propagate": null,
+  "propagateRelationTypes": null,
+  "propagateToOwner": null,
+  "propagateToTenant": null
+}

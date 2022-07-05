@@ -15,10 +15,21 @@ import static condition.wrapper.Operator.*;
 public class ConditionParser {
 
     public Condition parse(String rule) {
+        if(isSimple(rule)){
+            return createSimpleCondition(rule);
+        }
         List<String> nestedConditions = getMostNestedConditions(rule);
         List<RulePart> ruleParts = getNestedRuleParts(nestedConditions, rule);
         String result = replaceNestedParts(rule, ruleParts);
         return constructOneLevelCondition(result, ruleParts);
+    }
+
+    private Condition createSimpleCondition(String rule) {
+        return new Condition(rule, "", SIMPLE);
+    }
+
+    private boolean isSimple(String rule) {
+        return !rule.contains("AND")&& !rule.contains("OR");
     }
 
     private List<String> getMostNestedConditions(String rule) {
@@ -36,16 +47,25 @@ public class ConditionParser {
     }
 
     private Condition constructCondition(String condition) {
+        if(containsMoreThanTwoConditions(condition)){
+          return constructOneLevelCondition(condition, List.of());
+        }
         Operator operator = findOperator(condition);
         List<String> conditions =
                 Arrays.stream(condition.replace(operator.name(), "%").split("%")).collect(Collectors.toList());
         return new Condition(conditions.get(0), conditions.get(1), operator);
     }
 
+    private boolean containsMoreThanTwoConditions(String condition) {
+        List<String> componentsSorted =
+                Arrays.stream(condition.replace("OR", "$").replace("AND", "$").split("\\$")).collect(Collectors.toList());
+        return componentsSorted.size()>2;
+    }
+
     private Operator findOperator(String s) {
         if (s.contains("AND")) return AND;
         else if (s.contains("OR")) return OR;
-        return SIMPLE;
+       throw new RuntimeException("No operator found");
     }
 
     private RulePart getNextLevel(String rule, String condition, Condition previous) {
